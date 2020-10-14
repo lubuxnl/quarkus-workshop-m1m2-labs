@@ -11,11 +11,9 @@ import javax.validation.constraints.NotEmpty;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-@Entity
-@Cacheable
-public class Visits extends PanacheEntity {
+public class Visit {
   
-	public long petId;
+	public Long petId;
 
     @Column(name = "visit_date")
 	public LocalDate date;
@@ -23,5 +21,11 @@ public class Visits extends PanacheEntity {
 	@NotEmpty
 	public String description;
 
-	
+	public Long getPetId() {
+		return petId;
+	}
+
+	public void setPetId(Long petId) {
+		this.petId = petId;
+	}
 }

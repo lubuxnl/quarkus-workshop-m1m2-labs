@@ -11,9 +11,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.acme.model.Owners;
-import org.acme.model.Pets;
-import org.acme.model.Visits;
+import org.acme.model.Owner;
+import org.acme.model.Pet;
+import org.acme.model.Visit;
 import org.acme.rest.client.VisitsRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -23,54 +23,54 @@ import io.quarkus.panache.common.Sort;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class OwnersService {
-   
+
     @Inject
     @RestClient
     VisitsRestClient visitsRestClient;
 
-    public List<Owners> findByLastName(String lastName) {
+    public List<Owner> findByLastName(String lastName) {
 
         if (lastName != null && !lastName.isEmpty()) {
-            return Owners.find("LOWER(lastName) LIKE LOWER(?1) ", 
-                Sort.by("firstName"), "%" + lastName + "%").list();
+            return Owner.find("LOWER(lastName) LIKE LOWER(?1) ",
+                    Sort.by("firstName"), "%" + lastName + "%").list();
         } else {
-            return Owners.listAll();
-        }        
-    } 
+            return Owner.listAll();
+        }
+    }
 
-    public Owners findById(Long id) {
-        Owners theOwner = Owners.findById(id.longValue());
+    public Owner findById(Long id) {
+        Owner theOwner = Owner.findById(id.longValue());
         // assignPetVisits(theOwner);
-        
+
         assignPetVisitsMulti(theOwner);
 
         return theOwner;
     }
 
-    private void assignPetVisits(Owners theOwner) {
-        List<Pets> thePetsCollection = theOwner.pets;
+    private void assignPetVisits(Owner theOwner) {
+        List<Pet> pets = theOwner.pets;
 
-        for (Pets tempPet : thePetsCollection) {
-            List<Visits> theVisitsCollection = visitsRestClient.visits(tempPet.id);
-            tempPet.visits = theVisitsCollection;
+        for (Pet tempPet : pets) {
+            List<Visit> visits = visitsRestClient.visits(tempPet.id);
+            tempPet.visits = visits;
         }
     }
 
-    private void assignPetVisitsMulti(Owners theOwner) {
-        List<Pets> thePetsCollection = theOwner.pets;
+    private void assignPetVisitsMulti(Owner theOwner) {
+        List<Pet> thePets = theOwner.pets;
 
         System.out.println("assigning pets visits");
-        
-        Map<Long, Pets> thePetsMap = thePetsCollection.stream()
-                                                      .collect(Collectors.toMap(Pets::getId, pets -> pets));
+
+        Map<Long, Pet> thePetsMap = thePets.stream()
+                .collect(Collectors.toMap(Pet::getId, pets -> pets));
 
         List<Long> petIds = new ArrayList<>(thePetsMap.keySet());
-        List<Visits> visitsCollection = visitsRestClient.visitsMultiGet(petIds);
+        List<Visit> visitsCollection = visitsRestClient.visitsMultiGet(petIds);
 
         visitsCollection.forEach(tempVisit -> {
             long petId = tempVisit.petId;
 
-            Pets thePet = thePetsMap.get(petId);
+            Pet thePet = thePetsMap.get(petId);
 
             if (thePet.visits == null) {
                 thePet.visits = new ArrayList<>();
