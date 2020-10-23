@@ -25,7 +25,10 @@ import org.jboss.logging.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 public class VisitsResource {
 
-    private static final Logger LOG = Logger.getLogger(VisitsService.class);
+    private static final java.util.logging.Logger LOG = Logger.getLogger(VisitsService.class);
+
+    @ConfigProperty(name = "greeting.message")
+    String message;
 
     @Inject
     VisitsService visitsService;
@@ -36,6 +39,7 @@ public class VisitsResource {
     @GET
     @Path("pets/visits")
     public List<Visit> visitsMultiGet(@QueryParam("petIds") List<Long> petIds) {
+
         return visitsService.findByMultiPetIds(petIds);
     }
 
@@ -45,6 +49,13 @@ public class VisitsResource {
         return visitsService.findByPetId(petId);
     }
 
+    @GET
+    @Path("test")
+    public String test() {
+        LOG.info("from config map. 'greeting.message'=" + message);
+        return message;
+    }
+    
     @POST
     @Path("owners/*/pets/{petId}/visits")
     public Response create(@PathParam("petId") long petId, Visit theVisit, @Context UriInfo uriInfo) {
