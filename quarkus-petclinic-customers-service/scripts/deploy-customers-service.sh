@@ -1,21 +1,10 @@
 #!/bin/bash
 
-USERXX=$1
-DELAY=$2
-
-if [ -z "$USERXX" -o "$USERXX" = "userXX" ]
-  then
-    echo "Usage: Input your username like deploy-inventory.sh user1"
-    exit;
-fi
-
-echo Your username is $USERXX
-
 echo Deploy  customer-sservice........
 
 cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 
-oc delete dc,bc,build,svc,route,pod,is --all
+oc delete deployments,dc,bc,build,svc,route,pod,is --all
 
 mvn clean package -DskipTests
 
