@@ -18,13 +18,6 @@ oc new-app -e POSTGRESQL_USER=vets \
 # Quarkus App
 #
 oc new-build registry.access.redhat.com/openjdk/openjdk-11-rhel7 --binary --name=vets-service -l app=vets-service
-
-if [ ! -z $DELAY ]
-  then 
-    echo Delay is $DELAY
-    sleep $DELAY
-fi
-
 oc start-build vets-service --from-file=target/quarkus-petclinic-vets-service-1.0.0-SNAPSHOT-runner.jar --follow
 oc new-app vets-service -e QUARKUS_PROFILE=prod
 oc expose service vets-service
