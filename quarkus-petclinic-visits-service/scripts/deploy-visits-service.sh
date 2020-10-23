@@ -14,15 +14,6 @@ oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
   --name=visits-database
 
-# create config map
-oc create configmap visits-service-cm \
-    --from-literal=greeting.message=Houston
-
-# Add the view role to the default service account.
-# The service application calls the Kubernetes API to retrieve the ConfigMap, 
-# which requires view access
-oc policy add-role-to-user view -z default
-
 #
 # Quarkus App
 #
