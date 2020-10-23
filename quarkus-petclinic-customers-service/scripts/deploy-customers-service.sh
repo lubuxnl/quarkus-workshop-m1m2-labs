@@ -35,7 +35,14 @@ oc new-app customers-service -e QUARKUS_PROFILE=prod
 oc expose service customers-service
 
 clear
-echo "Done! Verify by accessing in your browser:"
+echo "Done! Verify by using steps below:"
 echo
-echo "http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')"
+echo "curl command:"
+echo "$ http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners"
+echo
+echo "Open a web browser and visit:"
+echo "http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners"
+echo
+echo "Open a web browser and visit Swagger UI"
+echo "http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/swagger-ui"
 echo
