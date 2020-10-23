@@ -4,12 +4,7 @@ echo Deploy visits-service........
 
 cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 
-oc delete deployments,dc,bc,build,svc,route,pod,is --all
-
 mvn clean package -DskipTests
-
-echo "Waiting 30 seconds to finalize deletion of resources..."
-sleep 30
 
 #
 # Database
