@@ -25,7 +25,7 @@ oc start-build visits-service --from-file=target/quarkus-petclinic-visits-servic
 oc new-app visits-service -e QUARKUS_PROFILE=prod
 oc expose service visits-service
 
-clear
+# clear
 echo "Done! Verify by using steps below:"
 echo
 echo "Run the curl command to view a list of visits (json):"
