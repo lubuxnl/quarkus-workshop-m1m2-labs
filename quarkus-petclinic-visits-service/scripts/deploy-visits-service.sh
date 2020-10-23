@@ -35,7 +35,7 @@ echo
 echo "Run the curl command to view a list of visits (json):"
 echo "$ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8"
 echo
-echo "Open a web browser and visit the URL to view a list of owners (json):"
+echo "Open a web browser and visit the URL to view a list of visits (json):"
 echo "http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8"
 echo
 echo "Open a web browser and visit Swagger UI"
