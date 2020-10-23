@@ -16,21 +16,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import org.acme.model.Visit;
 import org.acme.service.VisitsService;
-// import org.jboss.logging.Logger;
+import org.jboss.logging.Logger;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class VisitsResource {
 
-    // private static final java.util.logging.Logger LOG = Logger.getLogger(VisitsService.class);
-
-    @ConfigProperty(name = "greeting.message")
-    String message;
+    private static final Logger LOG = Logger.getLogger(VisitsService.class);
 
     @Inject
     VisitsService visitsService;
@@ -51,19 +46,12 @@ public class VisitsResource {
         return visitsService.findByPetId(petId);
     }
 
-    @GET
-    @Path("test")
-    public String test() {
-        // LOG.info("from config map. 'greeting.message'=" + message);
-        return message;
-    }
-
     @POST
     @Path("owners/*/pets/{petId}/visits")
     public Response create(@PathParam("petId") long petId, Visit theVisit, @Context UriInfo uriInfo) {
         theVisit.petId = petId;
 
-        // LOG.debug("Persisting: " + theVisit);
+        LOG.debug("Persisting: " + theVisit);
         visitsService.save(theVisit);
 
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
