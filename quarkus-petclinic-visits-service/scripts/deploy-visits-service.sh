@@ -14,6 +14,9 @@ oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
   --name=visits-database
 
+oc create configmap visits-service-cm \
+    --from-literal=greeting.message=Houston
+
 #
 # Quarkus App
 #
