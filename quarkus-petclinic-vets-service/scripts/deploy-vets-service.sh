@@ -2,11 +2,9 @@
 
 echo Deploy vets-service........
 
-oc delete deployments,dc,bc,build,svc,route,pod,is vets-service
+# oc delete deployments,dc,bc,build,svc,route,pod,is vets-service
 
 cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
-
-mvn clean package -DskipTests
 
 #
 # Database

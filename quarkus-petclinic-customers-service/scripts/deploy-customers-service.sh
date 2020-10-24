@@ -6,8 +6,6 @@ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 
 # oc delete deployments,dc,bc,build,svc,route,pod,is --all
 
-mvn clean package -DskipTests
-
 #
 # Database
 #
@@ -19,12 +17,10 @@ oc new-app -e POSTGRESQL_USER=customers \
 #
 # Quarkus App
 #
-oc new-build registry.access.redhat.com/openjdk/openjdk-11-rhel7 --binary --name=customers-service \
-    -l app=customers-service 
-
-oc start-build customers-service --from-file=target/quarkus-petclinic-customers-service-1.0.0-SNAPSHOT-runner.jar --follow
-oc new-app customers-service -e QUARKUS_PROFILE=prod
-oc expose service customers-service
+#
+# Quarkus App
+#
+mvn clean package -Dquarkus.kubernetes.deploy=true
 
 clear
 echo "Done! Verify by using steps below:"
